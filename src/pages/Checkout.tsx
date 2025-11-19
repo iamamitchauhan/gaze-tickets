@@ -13,7 +13,7 @@ import { Loader2 } from "lucide-react";
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { event, selectedTickets, totalPrice } = location.state || {};
+  const { event, selectedTickets, totalPrice, attendeesData } = location.state || {};
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [buyerInfo, setBuyerInfo] = useState({
@@ -34,11 +34,13 @@ const Checkout = () => {
 
   const generateTickets = (): PurchasedTicket[] => {
     const tickets: PurchasedTicket[] = [];
+    let attendeeIndex = 0;
     
     selectedTickets.forEach((ticketType: any) => {
       for (let i = 0; i < ticketType.quantity; i++) {
         const ticketId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         const publicId = `${event.id}-${ticketId}`;
+        const attendee = attendeesData[attendeeIndex];
         
         tickets.push({
           id: ticketId,
@@ -46,8 +48,16 @@ const Checkout = () => {
           ticketTypeName: ticketType.name,
           price: ticketType.price,
           qrCode: `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(publicId)}`,
-          publicId: publicId
+          publicId: publicId,
+          attendeeName: attendee.name,
+          attendeeEmail: attendee.email,
+          attendeePhone: attendee.phone,
+          foodPreference: attendee.foodPreference,
+          accommodation: attendee.accommodation,
+          specialRequests: attendee.specialRequests,
         });
+        
+        attendeeIndex++;
       }
     });
 

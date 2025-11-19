@@ -206,6 +206,12 @@ export interface PurchasedTicket {
   price: number;
   qrCode: string;
   publicId: string;
+  attendeeName: string;
+  attendeeEmail: string;
+  attendeePhone: string;
+  foodPreference?: string;
+  accommodation?: string;
+  specialRequests?: string;
 }
 
 // Helper functions for localStorage

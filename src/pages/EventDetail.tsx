@@ -64,7 +64,7 @@ const EventDetail = () => {
         quantity: selectedTickets[ticket.id]
       }));
 
-    navigate('/checkout', {
+    navigate('/attendee-info', {
       state: {
         event,
         selectedTickets: selectedTicketData,
