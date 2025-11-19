@@ -113,15 +113,21 @@ const AttendeeInfo = () => {
   const handleCopyToAll = () => {
     if (!validateCurrentAttendee()) return;
 
-    const updatedData = attendeesData.map((_, index) => ({
-      ...attendeesData[currentTicketIndex],
+    const currentData = attendeesData[currentTicketIndex];
+    const updatedData = attendeesData.map(() => ({
+      name: currentData.name,
+      email: currentData.email,
+      phone: currentData.phone,
+      foodPreference: currentData.foodPreference,
+      accommodation: currentData.accommodation,
+      specialRequests: currentData.specialRequests,
     }));
 
     setAttendeesData(updatedData);
     
     toast({
       title: "Details copied",
-      description: "Contact information copied to all tickets",
+      description: `Contact information copied to all ${allTickets.length} tickets`,
     });
   };
 
