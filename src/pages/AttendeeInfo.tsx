@@ -110,6 +110,21 @@ const AttendeeInfo = () => {
     }
   };
 
+  const handleCopyToAll = () => {
+    if (!validateCurrentAttendee()) return;
+
+    const updatedData = attendeesData.map((_, index) => ({
+      ...attendeesData[currentTicketIndex],
+    }));
+
+    setAttendeesData(updatedData);
+    
+    toast({
+      title: "Details copied",
+      description: "Contact information copied to all tickets",
+    });
+  };
+
   const handleBack = () => {
     if (currentTicketIndex > 0) {
       setCurrentTicketIndex(prev => prev - 1);
@@ -150,6 +165,23 @@ const AttendeeInfo = () => {
         </div>
 
         <Card className="p-6">
+          {allTickets.length > 1 && (
+            <div className="mb-6 p-4 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground mb-3">
+                Buying multiple tickets? Save time by using the same contact info for all.
+              </p>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={handleCopyToAll}
+                className="w-full sm:w-auto"
+              >
+                Copy to All Tickets
+              </Button>
+            </div>
+          )}
+
           <div className="space-y-4">
             <div>
               <Label htmlFor="name">Full Name *</Label>
