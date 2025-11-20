@@ -87,54 +87,77 @@ const MyTicketsV2 = () => {
               Your Tickets ({currentPurchase.tickets.length})
             </h2>
             
-            <div className="space-y-4">
-              {currentPurchase.tickets.map((ticket, index) => (
-                <Card key={ticket.id} className="p-6">
-                  <div className="flex flex-col md:flex-row gap-6">
-                    {/* QR Code Section */}
-                    <div className="flex-shrink-0">
-                      <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto md:mx-0">
-                        <img
-                          src={ticket.qrCode}
-                          alt={`Ticket ${index + 1} QR Code`}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <p className="text-sm text-muted-foreground text-center mt-3">
-                        {ticket.ticketTypeName} • Ticket {index + 1}
-                      </p>
-                    </div>
-
-                    {/* Ticket Info & Actions */}
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {ticket.ticketTypeName}
-                        </h3>
-                        <div className="space-y-1 text-sm text-muted-foreground">
-                          <p><span className="font-medium">Name:</span> {currentPurchase.buyerName}</p>
-                          <p><span className="font-medium">Email:</span> {currentPurchase.buyerEmail}</p>
-                          <p><span className="font-medium">Ticket ID:</span> {ticket.id}</p>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-                        <Button variant="outline" className="w-full">
-                          <FileText className="h-4 w-4 mr-2" />
-                          View Receipt
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                          <RefreshCw className="h-4 w-4 mr-2" />
-                          Request Refund
-                        </Button>
-                      </div>
-                    </div>
+            <div className="space-y-8">
+              {Object.entries(
+                currentPurchase.tickets.reduce((acc, ticket) => {
+                  const typeName = ticket.ticketTypeName;
+                  if (!acc[typeName]) {
+                    acc[typeName] = [];
+                  }
+                  acc[typeName].push(ticket);
+                  return acc;
+                }, {} as Record<string, typeof currentPurchase.tickets>)
+              ).map(([ticketTypeName, tickets]) => (
+                <div key={ticketTypeName} className="space-y-4">
+                  {/* Category Header */}
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {ticketTypeName}
+                    </h3>
+                    <Badge variant="secondary" className="text-sm">
+                      {tickets.length} {tickets.length === 1 ? 'Ticket' : 'Tickets'}
+                    </Badge>
                   </div>
-                </Card>
+
+                  {/* Tickets in this category */}
+                  <div className="space-y-4">
+                    {tickets.map((ticket, index) => (
+                      <Card key={ticket.id} className="p-6">
+                        <div className="flex flex-col md:flex-row gap-6">
+                          {/* QR Code Section */}
+                          <div className="flex-shrink-0">
+                            <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto md:mx-0">
+                              <img
+                                src={ticket.qrCode}
+                                alt={`${ticketTypeName} Ticket ${index + 1} QR Code`}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <p className="text-sm text-muted-foreground text-center mt-3">
+                              Ticket {index + 1} of {tickets.length}
+                            </p>
+                          </div>
+
+                          {/* Ticket Info & Actions */}
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div>
+                              <div className="space-y-1 text-sm text-muted-foreground">
+                                <p><span className="font-medium">Name:</span> {currentPurchase.buyerName}</p>
+                                <p><span className="font-medium">Email:</span> {currentPurchase.buyerEmail}</p>
+                                <p><span className="font-medium">Ticket ID:</span> {ticket.id}</p>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+                              <Button variant="outline" className="w-full">
+                                <FileText className="h-4 w-4 mr-2" />
+                                View Receipt
+                              </Button>
+                              <Button variant="outline" className="w-full">
+                                <Download className="h-4 w-4 mr-2" />
+                                Download
+                              </Button>
+                              <Button variant="outline" className="w-full">
+                                <RefreshCw className="h-4 w-4 mr-2" />
+                                Request Refund
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
