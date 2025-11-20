@@ -178,6 +178,44 @@ export const mockEvents: Event[] = [
         features: ["Priority entry", "VIP seating for shows", "Complimentary food vouchers", "Exclusive meet & greet", "Premium parking"]
       }
     ]
+  },
+  {
+    id: "5",
+    name: "New Year's Eve Gala 2026",
+    description: "Ring in the new year with an unforgettable celebration",
+    longDescription: "Welcome 2026 in style at our spectacular New Year's Eve Gala! Enjoy live music, gourmet dining, premium champagne toast at midnight, and breathtaking fireworks display. Dress to impress for this black-tie event of the year.",
+    date: "2025-12-31",
+    time: "8:00 PM - 2:00 AM",
+    venue: "Grand Ballroom Hotel",
+    venueAddress: "100 Luxury Lane, Miami, FL 33101",
+    image: concertImage,
+    category: "Entertainment",
+    ticketTypes: [
+      {
+        id: "5-early",
+        name: "Early Bird",
+        price: 149.99,
+        available: 75,
+        description: "Special early booking rate",
+        features: ["Standard entry", "Welcome cocktail", "Party favors"]
+      },
+      {
+        id: "5-general",
+        name: "General Admission",
+        price: 199.99,
+        available: 300,
+        description: "Full night celebration access",
+        features: ["Entry to main ballroom", "Champagne toast", "Live entertainment", "Premium open bar", "Midnight buffet"]
+      },
+      {
+        id: "5-vip",
+        name: "VIP Package",
+        price: 449.99,
+        available: 50,
+        description: "Ultimate New Year's experience",
+        features: ["Private VIP lounge access", "Reserved premium seating", "Premium bottle service", "Gourmet 5-course dinner", "Exclusive after-party access", "VIP valet parking"]
+      }
+    ]
   }
 ];
 
