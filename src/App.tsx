@@ -10,6 +10,7 @@ import AttendeeInfo from "./pages/AttendeeInfo";
 import Checkout from "./pages/Checkout";
 import PurchaseSuccess from "./pages/PurchaseSuccess";
 import MyTickets from "./pages/MyTickets";
+import MyTicketsV2 from "./pages/MyTicketsV2";
 import TicketView from "./pages/TicketView";
 import NotFound from "./pages/NotFound";
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/purchase-success" element={<PurchaseSuccess />} />
           <Route path="/my-tickets" element={<MyTickets />} />
+          <Route path="/my-tickets-v2" element={<MyTicketsV2 />} />
           <Route path="/ticket/:publicId" element={<TicketView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

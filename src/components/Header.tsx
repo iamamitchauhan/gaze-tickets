@@ -37,6 +37,9 @@ export const Header = () => {
           <Link to="/my-tickets" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
             My Tickets
           </Link>
+          <Link to="/my-tickets-v2" className="text-sm font-medium text-foreground hover:text-primary transition-colors">
+            My Tickets v2
+          </Link>
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -52,6 +55,9 @@ export const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate('/my-tickets')}>
                   My Tickets
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/my-tickets-v2')}>
+                  My Tickets v2
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   Logout
