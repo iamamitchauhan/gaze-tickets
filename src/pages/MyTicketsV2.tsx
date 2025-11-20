@@ -3,12 +3,75 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Ticket, Download, FileText, RefreshCw, Calendar, MapPin, Clock } from "lucide-react";
-import { getPurchases } from "@/lib/mockData";
+import { getPurchases, Purchase, mockEvents } from "@/lib/mockData";
 import { useNavigate } from "react-router-dom";
 
 const MyTicketsV2 = () => {
   const navigate = useNavigate();
   const purchases = getPurchases();
+
+  // Create sample purchase using the New Year's Eve Gala event for demo purposes
+  const createSamplePurchase = (): Purchase => {
+    const newYearEvent = mockEvents.find(e => e.id === "5");
+    if (!newYearEvent) {
+      throw new Error("New Year's Eve Gala event not found");
+    }
+
+    return {
+      id: "SAMPLE-" + Date.now(),
+      eventId: newYearEvent.id,
+      eventName: newYearEvent.name,
+      eventDate: newYearEvent.date,
+      eventTime: newYearEvent.time,
+      eventVenue: newYearEvent.venue,
+      eventImage: newYearEvent.image,
+      buyerName: "John Doe",
+      buyerEmail: "john.doe@example.com",
+      buyerPhone: "+1 (555) 123-4567",
+      notes: "",
+      tickets: [
+        {
+          id: "TKT-NYE-001",
+          ticketTypeId: "5-general",
+          ticketTypeName: "General Admission",
+          price: 199.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-NYE-001",
+          publicId: "PUB-NYE-001",
+          attendeeName: "John Doe",
+          attendeeEmail: "john.doe@example.com",
+          attendeePhone: "+1 (555) 123-4567"
+        },
+        {
+          id: "TKT-NYE-002",
+          ticketTypeId: "5-general",
+          ticketTypeName: "General Admission",
+          price: 199.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-NYE-002",
+          publicId: "PUB-NYE-002",
+          attendeeName: "Jane Doe",
+          attendeeEmail: "jane.doe@example.com",
+          attendeePhone: "+1 (555) 123-4568"
+        },
+        {
+          id: "TKT-NYE-003",
+          ticketTypeId: "5-vip",
+          ticketTypeName: "VIP Package",
+          price: 449.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-NYE-003",
+          publicId: "PUB-NYE-003",
+          attendeeName: "John Doe",
+          attendeeEmail: "john.doe@example.com",
+          attendeePhone: "+1 (555) 123-4567"
+        }
+      ],
+      totalAmount: 849.97,
+      purchaseDate: new Date().toISOString(),
+      isGuest: false
+    };
+  };
+
+  // Use sample purchase if no real purchases exist
+  const displayPurchases = purchases.length > 0 ? purchases : [createSamplePurchase()];
 
   // Function to check if QR code should be visible (1 hour before event)
   const isQRCodeVisible = (eventDate: string, eventTime: string) => {
@@ -36,7 +99,7 @@ const MyTicketsV2 = () => {
     }
   };
 
-  if (purchases.length === 0) {
+  if (displayPurchases.length === 0) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -56,7 +119,7 @@ const MyTicketsV2 = () => {
     );
   }
 
-  const currentPurchase = purchases[0];
+  const currentPurchase = displayPurchases[0];
   const qrVisible = isQRCodeVisible(currentPurchase.eventDate, currentPurchase.eventTime);
 
   return (
