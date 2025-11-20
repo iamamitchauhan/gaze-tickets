@@ -94,10 +94,10 @@ const MyTickets = () => {
             <div className="space-y-4">
               {currentPurchase.tickets.map((ticket, index) => (
                 <Card key={ticket.id} className="p-6">
-                  <div className="flex flex-col md:flex-row gap-6">
+                  <div className="flex flex-col lg:flex-row gap-6 items-start">
                     {/* QR Code Section */}
                     <div className="flex-shrink-0">
-                      <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto md:mx-0">
+                      <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto lg:mx-0">
                         <img
                           src={ticket.qrCode}
                           alt={`Ticket ${index + 1} QR Code`}
@@ -109,33 +109,32 @@ const MyTickets = () => {
                       </p>
                     </div>
 
-                    {/* Ticket Info & Actions */}
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {ticket.ticketTypeName}
-                        </h3>
-                        <div className="space-y-1 text-sm text-muted-foreground">
-                          <p><span className="font-medium">Name:</span> {currentPurchase.buyerName}</p>
-                          <p><span className="font-medium">Email:</span> {currentPurchase.buyerEmail}</p>
-                          <p><span className="font-medium">Ticket ID:</span> {ticket.id}</p>
-                        </div>
+                    {/* Ticket Info */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-semibold mb-3">
+                        {ticket.ticketTypeName}
+                      </h3>
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        <p><span className="font-medium text-foreground">Name:</span> {currentPurchase.buyerName}</p>
+                        <p><span className="font-medium text-foreground">Email:</span> {currentPurchase.buyerEmail}</p>
+                        <p><span className="font-medium text-foreground">Ticket ID:</span> {ticket.id}</p>
                       </div>
+                    </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
-                        <Button variant="outline" className="w-full">
-                          <FileText className="h-4 w-4 mr-2" />
-                          View Receipt
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                          <RefreshCw className="h-4 w-4 mr-2" />
-                          Request Refund
-                        </Button>
-                      </div>
+                    {/* Action Buttons */}
+                    <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[180px]">
+                      <Button variant="outline" className="w-full">
+                        <FileText className="h-4 w-4 mr-2" />
+                        View Receipt
+                      </Button>
+                      <Button variant="outline" className="w-full">
+                        <Download className="h-4 w-4 mr-2" />
+                        Download
+                      </Button>
+                      <Button variant="outline" className="w-full">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Request Refund
+                      </Button>
                     </div>
                   </div>
                 </Card>
