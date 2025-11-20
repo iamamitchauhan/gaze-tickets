@@ -10,6 +10,32 @@ const MyTicketsV2 = () => {
   const navigate = useNavigate();
   const purchases = getPurchases();
 
+  // Function to check if QR code should be visible (1 hour before event)
+  const isQRCodeVisible = (eventDate: string, eventTime: string) => {
+    try {
+      const [time, period] = eventTime.split(' ');
+      const [hours, minutes] = time.split(':');
+      let eventHours = parseInt(hours);
+      
+      if (period === 'PM' && eventHours !== 12) {
+        eventHours += 12;
+      } else if (period === 'AM' && eventHours === 12) {
+        eventHours = 0;
+      }
+
+      const eventDateTime = new Date(eventDate);
+      eventDateTime.setHours(eventHours, parseInt(minutes), 0, 0);
+      
+      const oneHourBeforeEvent = new Date(eventDateTime.getTime() - 60 * 60 * 1000);
+      const now = new Date();
+      
+      return now >= oneHourBeforeEvent;
+    } catch (error) {
+      console.error('Error parsing event time:', error);
+      return false;
+    }
+  };
+
   if (purchases.length === 0) {
     return (
       <div className="min-h-screen bg-background">
@@ -31,6 +57,7 @@ const MyTicketsV2 = () => {
   }
 
   const currentPurchase = purchases[0];
+  const qrVisible = isQRCodeVisible(currentPurchase.eventDate, currentPurchase.eventTime);
 
   return (
     <div className="min-h-screen bg-background">
@@ -116,12 +143,24 @@ const MyTicketsV2 = () => {
                         <div className="flex flex-col md:flex-row gap-6">
                           {/* QR Code Section */}
                           <div className="flex-shrink-0">
-                            <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto md:mx-0">
+                            <div className="relative w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto md:mx-0">
                               <img
                                 src={ticket.qrCode}
                                 alt={`${ticketTypeName} Ticket ${index + 1} QR Code`}
-                                className="w-full h-full object-contain"
+                                className={`w-full h-full object-contain transition-all duration-300 ${
+                                  qrVisible ? '' : 'blur-md'
+                                }`}
                               />
+                              {!qrVisible && (
+                                <div className="absolute inset-0 flex items-center justify-center p-4">
+                                  <div className="text-center bg-background/95 rounded-lg p-3 shadow-lg">
+                                    <Clock className="h-6 w-6 mx-auto mb-2 text-primary" />
+                                    <p className="text-xs font-medium text-foreground">
+                                      QR code will be visible 1 hour before event start
+                                    </p>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                             <p className="text-sm text-muted-foreground text-center mt-3">
                               Ticket {index + 1} of {tickets.length}
