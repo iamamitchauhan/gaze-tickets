@@ -29,129 +29,142 @@ const MyTickets = () => {
     );
   }
 
-  const currentPurchase = purchases[0];
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
       <main className="pb-16">
-        {/* Hero Banner */}
-        <div className="relative h-[300px] md:h-[400px] w-full">
-          <img
-            src={currentPurchase.eventImage}
-            alt={currentPurchase.eventName}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-            <div className="container max-w-6xl mx-auto">
-              <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3">
-                {currentPurchase.eventName}
-              </h1>
-              <p className="text-lg text-muted-foreground mb-2">
-                {new Date(currentPurchase.eventDate).toLocaleDateString('en-US', { 
-                  weekday: 'long', 
-                  month: 'long', 
-                  day: 'numeric',
-                  year: 'numeric'
-                })} • {currentPurchase.eventTime}
-              </p>
-              <p className="text-muted-foreground">{currentPurchase.eventVenue}</p>
-            </div>
+        {/* Page Header */}
+        <div className="border-b">
+          <div className="container max-w-6xl mx-auto px-6 py-8">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">My Tickets</h1>
+            <p className="text-muted-foreground">
+              {purchases.length} {purchases.length === 1 ? 'event' : 'events'} • {purchases.reduce((total, p) => total + p.tickets.length, 0)} tickets
+            </p>
           </div>
         </div>
 
-        {/* Order Summary */}
+        {/* All Events & Tickets */}
         <div className="container max-w-6xl mx-auto px-6 mt-8">
-          <Card className="p-4 bg-muted/30">
-            <div className="flex items-center justify-between text-sm flex-wrap gap-2">
-              <div>
-                <span className="text-muted-foreground">Order {currentPurchase.id} on </span>
-                <span className="text-muted-foreground">
-                  {new Date(currentPurchase.purchaseDate).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </span>
-                <span className="font-semibold text-foreground ml-2">
-                  • ${currentPurchase.totalAmount.toFixed(2)}
-                </span>
-              </div>
-              <button className="text-primary hover:underline text-xs">
-                Report this event
-              </button>
-            </div>
-          </Card>
+          <div className="space-y-12">
+            {purchases.map((purchase) => (
+              <div key={purchase.id} className="space-y-6">
+                {/* Event Header */}
+                <div className="relative h-[200px] md:h-[250px] w-full rounded-xl overflow-hidden">
+                  <img
+                    src={purchase.eventImage}
+                    alt={purchase.eventName}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                      {purchase.eventName}
+                    </h2>
+                    <p className="text-sm md:text-base text-muted-foreground mb-1">
+                      {new Date(purchase.eventDate).toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        month: 'long', 
+                        day: 'numeric',
+                        year: 'numeric'
+                      })} • {purchase.eventTime}
+                    </p>
+                    <p className="text-sm text-muted-foreground">{purchase.eventVenue}</p>
+                  </div>
+                </div>
 
-          {/* Tickets Section */}
-          <div className="mt-8">
-            <h2 className="text-2xl font-bold mb-6">
-              Your Tickets ({currentPurchase.tickets.length})
-            </h2>
-            
-            <div className="space-y-4">
-              {currentPurchase.tickets.map((ticket, index) => (
-                <Card key={ticket.id} className="p-6">
-                  <div className="flex flex-col lg:flex-row gap-6 items-start">
-                    {/* QR Code Section */}
-                    <div className="flex-shrink-0">
-                      <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto lg:mx-0">
-                        <img
-                          src={ticket.qrCode}
-                          alt={`Ticket ${index + 1} QR Code`}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                      <p className="text-sm text-muted-foreground text-center mt-3">
-                        {ticket.ticketTypeName} • Ticket {index + 1}
-                      </p>
+                {/* Order Summary */}
+                <Card className="p-4 bg-muted/30">
+                  <div className="flex items-center justify-between text-sm flex-wrap gap-2">
+                    <div>
+                      <span className="text-muted-foreground">Order {purchase.id} on </span>
+                      <span className="text-muted-foreground">
+                        {new Date(purchase.purchaseDate).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </span>
+                      <span className="font-semibold text-foreground ml-2">
+                        • ${purchase.totalAmount.toFixed(2)}
+                      </span>
                     </div>
-
-                    {/* Ticket Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-semibold mb-3">
-                        {ticket.ticketTypeName}
-                      </h3>
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <p><span className="font-medium text-foreground">Name:</span> {currentPurchase.buyerName}</p>
-                        <p><span className="font-medium text-foreground">Email:</span> {currentPurchase.buyerEmail}</p>
-                        <p><span className="font-medium text-foreground">Ticket ID:</span> {ticket.id}</p>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[180px]">
-                      <Button variant="outline" className="w-full">
-                        <FileText className="h-4 w-4 mr-2" />
-                        View Receipt
-                      </Button>
-                      <Button variant="outline" className="w-full">
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </Button>
-                      <Button variant="outline" className="w-full">
-                        <RefreshCw className="h-4 w-4 mr-2" />
-                        Request Refund
-                      </Button>
-                    </div>
+                    <button className="text-primary hover:underline text-xs">
+                      Report this event
+                    </button>
                   </div>
                 </Card>
-              ))}
-            </div>
-          </div>
 
-          {/* Contact Organizer */}
-          <Card className="mt-6 p-6">
-            <h3 className="text-lg font-semibold mb-3">Need Help?</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Have questions about your tickets or the event? Contact the organizer.
-            </p>
-            <Button variant="ghost" className="text-primary">
-              Contact the organizer
-            </Button>
-          </Card>
+                {/* Tickets Section */}
+                <div>
+                  <h3 className="text-xl font-bold mb-4">
+                    Your Tickets ({purchase.tickets.length})
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    {purchase.tickets.map((ticket, index) => (
+                      <Card key={ticket.id} className="p-6">
+                        <div className="flex flex-col lg:flex-row gap-6 items-start">
+                          {/* QR Code Section */}
+                          <div className="flex-shrink-0">
+                            <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto lg:mx-0">
+                              <img
+                                src={ticket.qrCode}
+                                alt={`Ticket ${index + 1} QR Code`}
+                                className="w-full h-full object-contain"
+                              />
+                            </div>
+                            <p className="text-sm text-muted-foreground text-center mt-3">
+                              {ticket.ticketTypeName} • Ticket {index + 1}
+                            </p>
+                          </div>
+
+                          {/* Ticket Info */}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="text-xl font-semibold mb-3">
+                              {ticket.ticketTypeName}
+                            </h4>
+                            <div className="space-y-2 text-sm text-muted-foreground">
+                              <p><span className="font-medium text-foreground">Name:</span> {purchase.buyerName}</p>
+                              <p><span className="font-medium text-foreground">Email:</span> {purchase.buyerEmail}</p>
+                              <p><span className="font-medium text-foreground">Ticket ID:</span> {ticket.id}</p>
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[180px]">
+                            <Button variant="outline" className="w-full">
+                              <FileText className="h-4 w-4 mr-2" />
+                              View Receipt
+                            </Button>
+                            <Button variant="outline" className="w-full">
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </Button>
+                            <Button variant="outline" className="w-full">
+                              <RefreshCw className="h-4 w-4 mr-2" />
+                              Request Refund
+                            </Button>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Contact Organizer */}
+                <Card className="p-6">
+                  <h4 className="text-lg font-semibold mb-3">Need Help?</h4>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Have questions about your tickets or the event? Contact the organizer.
+                  </p>
+                  <Button variant="ghost" className="text-primary">
+                    Contact the organizer
+                  </Button>
+                </Card>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     </div>
