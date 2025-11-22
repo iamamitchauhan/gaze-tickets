@@ -305,14 +305,10 @@ const EventTicketCard = ({ purchase, isExpanded, onToggle, currentPage, onPageCh
         </Collapsible>
 
         {/* Contact Organizer */}
-        <div className="p-6 border rounded-lg bg-muted/20">
-          <h4 className="text-lg font-semibold mb-3">Need Help?</h4>
-          <p className="text-sm text-muted-foreground mb-4">
-            Have questions about your tickets or the event? Contact the organizer.
-          </p>
-          <Button variant="ghost" className="text-primary">
-            Contact the organizer
-          </Button>
+        <div className="flex justify-end">
+          <button className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            Need help? Contact organizer →
+          </button>
         </div>
       </div>
     </Card>
