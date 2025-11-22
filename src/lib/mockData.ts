@@ -261,7 +261,158 @@ export const savePurchase = (purchase: Purchase) => {
 
 export const getPurchases = (): Purchase[] => {
   const stored = localStorage.getItem('purchases');
-  return stored ? JSON.parse(stored) : [];
+  if (stored) {
+    return JSON.parse(stored);
+  }
+  
+  // Return dummy data with multiple events and attendees
+  return [
+    {
+      id: "ORD-2025-001",
+      eventId: "1",
+      eventName: "Summer Music Festival 2025",
+      eventDate: "2025-07-15",
+      eventTime: "12:00 PM - 11:00 PM",
+      eventVenue: "Central Park Arena",
+      eventImage: concertImage,
+      buyerName: "John Doe",
+      buyerEmail: "john.doe@email.com",
+      buyerPhone: "+1 (555) 123-4567",
+      notes: "Looking forward to the festival!",
+      tickets: [
+        {
+          id: "TKT-001-001",
+          ticketTypeId: "1-general",
+          ticketTypeName: "General Admission",
+          price: 129.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-001-001",
+          publicId: "SMF2025-GA-001",
+          attendeeName: "John Doe",
+          attendeeEmail: "john.doe@email.com",
+          attendeePhone: "+1 (555) 123-4567",
+          foodPreference: "Vegetarian",
+          specialRequests: "Wheelchair accessible seating preferred"
+        },
+        {
+          id: "TKT-001-002",
+          ticketTypeId: "1-general",
+          ticketTypeName: "General Admission",
+          price: 129.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-001-002",
+          publicId: "SMF2025-GA-002",
+          attendeeName: "Jane Smith",
+          attendeeEmail: "jane.smith@email.com",
+          attendeePhone: "+1 (555) 234-5678",
+          foodPreference: "Vegan",
+          specialRequests: "None"
+        }
+      ],
+      totalAmount: 259.98,
+      purchaseDate: "2025-03-15T10:30:00Z",
+      isGuest: false
+    },
+    {
+      id: "ORD-2025-002",
+      eventId: "2",
+      eventName: "Championship Finals 2025",
+      eventDate: "2025-08-20",
+      eventTime: "7:00 PM - 10:00 PM",
+      eventVenue: "National Stadium",
+      eventImage: sportsImage,
+      buyerName: "Sarah Johnson",
+      buyerEmail: "sarah.j@email.com",
+      buyerPhone: "+1 (555) 345-6789",
+      notes: "Can't wait for the finals!",
+      tickets: [
+        {
+          id: "TKT-002-001",
+          ticketTypeId: "2-vip",
+          ticketTypeName: "VIP Experience",
+          price: 349.99,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-002-001",
+          publicId: "CF2025-VIP-001",
+          attendeeName: "Sarah Johnson",
+          attendeeEmail: "sarah.j@email.com",
+          attendeePhone: "+1 (555) 345-6789",
+          foodPreference: "No restrictions",
+          specialRequests: "Box 12 preferred if available"
+        }
+      ],
+      totalAmount: 349.99,
+      purchaseDate: "2025-04-10T14:20:00Z",
+      isGuest: false
+    },
+    {
+      id: "ORD-2025-003",
+      eventId: "4",
+      eventName: "Diwali Mela - Festival of Lights",
+      eventDate: "2025-10-13",
+      eventTime: "12:00 PM - 10:00 PM",
+      eventVenue: "Southfork Ranch",
+      eventImage: festivalImage,
+      buyerName: "Raj Patel",
+      buyerEmail: "raj.patel@email.com",
+      buyerPhone: "+1 (555) 456-7890",
+      notes: "Family celebration",
+      tickets: [
+        {
+          id: "TKT-003-001",
+          ticketTypeId: "4-general",
+          ticketTypeName: "General Admission",
+          price: 12.50,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-003-001",
+          publicId: "DM2025-GA-001",
+          attendeeName: "Raj Patel",
+          attendeeEmail: "raj.patel@email.com",
+          attendeePhone: "+1 (555) 456-7890",
+          foodPreference: "Vegetarian",
+          specialRequests: "None"
+        },
+        {
+          id: "TKT-003-002",
+          ticketTypeId: "4-general",
+          ticketTypeName: "General Admission",
+          price: 12.50,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-003-002",
+          publicId: "DM2025-GA-002",
+          attendeeName: "Priya Patel",
+          attendeeEmail: "priya.patel@email.com",
+          attendeePhone: "+1 (555) 456-7890",
+          foodPreference: "Vegetarian",
+          specialRequests: "None"
+        },
+        {
+          id: "TKT-003-003",
+          ticketTypeId: "4-general",
+          ticketTypeName: "General Admission",
+          price: 12.50,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-003-003",
+          publicId: "DM2025-GA-003",
+          attendeeName: "Aarav Patel",
+          attendeeEmail: "raj.patel@email.com",
+          attendeePhone: "+1 (555) 456-7890",
+          foodPreference: "No restrictions",
+          specialRequests: "Child seat required"
+        },
+        {
+          id: "TKT-003-004",
+          ticketTypeId: "4-general",
+          ticketTypeName: "General Admission",
+          price: 12.50,
+          qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TKT-003-004",
+          publicId: "DM2025-GA-004",
+          attendeeName: "Diya Patel",
+          attendeeEmail: "raj.patel@email.com",
+          attendeePhone: "+1 (555) 456-7890",
+          foodPreference: "No restrictions",
+          specialRequests: "Child seat required"
+        }
+      ],
+      totalAmount: 50.00,
+      purchaseDate: "2025-05-20T09:15:00Z",
+      isGuest: false
+    }
+  ];
 };
 
 export const getPurchaseByPublicId = (publicId: string): { purchase: Purchase; ticket: PurchasedTicket } | null => {

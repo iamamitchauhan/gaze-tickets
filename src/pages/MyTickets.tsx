@@ -46,11 +46,11 @@ const MyTickets = () => {
 
         {/* All Events & Tickets */}
         <div className="container max-w-6xl mx-auto px-6 mt-8">
-          <div className="space-y-12">
+          <div className="space-y-8">
             {purchases.map((purchase) => (
-              <div key={purchase.id} className="space-y-6">
+              <Card key={purchase.id} className="overflow-hidden">
                 {/* Event Header */}
-                <div className="relative h-[200px] md:h-[250px] w-full rounded-xl overflow-hidden">
+                <div className="relative h-[200px] md:h-[250px] w-full">
                   <img
                     src={purchase.eventImage}
                     alt={purchase.eventName}
@@ -73,96 +73,123 @@ const MyTickets = () => {
                   </div>
                 </div>
 
-                {/* Order Summary */}
-                <Card className="p-4 bg-muted/30">
-                  <div className="flex items-center justify-between text-sm flex-wrap gap-2">
-                    <div>
-                      <span className="text-muted-foreground">Order {purchase.id} on </span>
-                      <span className="text-muted-foreground">
-                        {new Date(purchase.purchaseDate).toLocaleDateString('en-US', { 
-                          month: 'short', 
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
-                      <span className="font-semibold text-foreground ml-2">
-                        • ${purchase.totalAmount.toFixed(2)}
-                      </span>
+                <div className="p-6 space-y-6">
+                  {/* Order Summary */}
+                  <div className="p-4 bg-muted/30 rounded-lg">
+                    <div className="flex items-center justify-between text-sm flex-wrap gap-2">
+                      <div>
+                        <span className="text-muted-foreground">Order {purchase.id} on </span>
+                        <span className="text-muted-foreground">
+                          {new Date(purchase.purchaseDate).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </span>
+                        <span className="font-semibold text-foreground ml-2">
+                          • ${purchase.totalAmount.toFixed(2)}
+                        </span>
+                      </div>
+                      <button className="text-primary hover:underline text-xs">
+                        Report this event
+                      </button>
                     </div>
-                    <button className="text-primary hover:underline text-xs">
-                      Report this event
-                    </button>
                   </div>
-                </Card>
 
-                {/* Tickets Section */}
-                <div>
-                  <h3 className="text-xl font-bold mb-4">
-                    Your Tickets ({purchase.tickets.length})
-                  </h3>
-                  
-                  <div className="space-y-4">
-                    {purchase.tickets.map((ticket, index) => (
-                      <Card key={ticket.id} className="p-6">
-                        <div className="flex flex-col lg:flex-row gap-6 items-start">
-                          {/* QR Code Section */}
-                          <div className="flex-shrink-0">
-                            <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto lg:mx-0">
-                              <img
-                                src={ticket.qrCode}
-                                alt={`Ticket ${index + 1} QR Code`}
-                                className="w-full h-full object-contain"
-                              />
+                  {/* Tickets Section */}
+                  <div>
+                    <h3 className="text-xl font-bold mb-4">
+                      Your Tickets ({purchase.tickets.length})
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {purchase.tickets.map((ticket, index) => (
+                        <div key={ticket.id} className="p-6 border rounded-lg bg-card">
+                          <div className="flex flex-col lg:flex-row gap-6 items-start">
+                            {/* QR Code Section */}
+                            <div className="flex-shrink-0">
+                              <div className="w-48 h-48 bg-white p-4 rounded-lg shadow-sm mx-auto lg:mx-0">
+                                <img
+                                  src={ticket.qrCode}
+                                  alt={`Ticket ${index + 1} QR Code`}
+                                  className="w-full h-full object-contain"
+                                />
+                              </div>
+                              <p className="text-sm text-muted-foreground text-center mt-3">
+                                {ticket.ticketTypeName} • Ticket {index + 1}
+                              </p>
                             </div>
-                            <p className="text-sm text-muted-foreground text-center mt-3">
-                              {ticket.ticketTypeName} • Ticket {index + 1}
-                            </p>
-                          </div>
 
-                          {/* Ticket Info */}
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-xl font-semibold mb-3">
-                              {ticket.ticketTypeName}
-                            </h4>
-                            <div className="space-y-2 text-sm text-muted-foreground">
-                              <p><span className="font-medium text-foreground">Name:</span> {purchase.buyerName}</p>
-                              <p><span className="font-medium text-foreground">Email:</span> {purchase.buyerEmail}</p>
-                              <p><span className="font-medium text-foreground">Ticket ID:</span> {ticket.id}</p>
+                            {/* Ticket Info */}
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-xl font-semibold mb-3">
+                                {ticket.ticketTypeName}
+                              </h4>
+                              <div className="space-y-2 text-sm">
+                                <div>
+                                  <span className="font-medium text-foreground">Attendee:</span>
+                                  <p className="text-muted-foreground">{ticket.attendeeName}</p>
+                                </div>
+                                <div>
+                                  <span className="font-medium text-foreground">Email:</span>
+                                  <p className="text-muted-foreground">{ticket.attendeeEmail}</p>
+                                </div>
+                                <div>
+                                  <span className="font-medium text-foreground">Phone:</span>
+                                  <p className="text-muted-foreground">{ticket.attendeePhone}</p>
+                                </div>
+                                <div>
+                                  <span className="font-medium text-foreground">Ticket ID:</span>
+                                  <p className="text-muted-foreground">{ticket.id}</p>
+                                </div>
+                                {ticket.foodPreference && (
+                                  <div>
+                                    <span className="font-medium text-foreground">Food Preference:</span>
+                                    <p className="text-muted-foreground">{ticket.foodPreference}</p>
+                                  </div>
+                                )}
+                                {ticket.specialRequests && (
+                                  <div>
+                                    <span className="font-medium text-foreground">Special Requests:</span>
+                                    <p className="text-muted-foreground">{ticket.specialRequests}</p>
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                          </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[180px]">
-                            <Button variant="outline" className="w-full">
-                              <FileText className="h-4 w-4 mr-2" />
-                              View Receipt
-                            </Button>
-                            <Button variant="outline" className="w-full">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download
-                            </Button>
-                            <Button variant="outline" className="w-full">
-                              <RefreshCw className="h-4 w-4 mr-2" />
-                              Request Refund
-                            </Button>
+                            {/* Action Buttons */}
+                            <div className="flex flex-col gap-3 w-full lg:w-auto lg:min-w-[180px]">
+                              <Button variant="outline" className="w-full">
+                                <FileText className="h-4 w-4 mr-2" />
+                                View Receipt
+                              </Button>
+                              <Button variant="outline" className="w-full">
+                                <Download className="h-4 w-4 mr-2" />
+                                Download
+                              </Button>
+                              <Button variant="outline" className="w-full">
+                                <RefreshCw className="h-4 w-4 mr-2" />
+                                Request Refund
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </Card>
-                    ))}
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Contact Organizer */}
+                  <div className="p-6 border rounded-lg bg-muted/20">
+                    <h4 className="text-lg font-semibold mb-3">Need Help?</h4>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Have questions about your tickets or the event? Contact the organizer.
+                    </p>
+                    <Button variant="ghost" className="text-primary">
+                      Contact the organizer
+                    </Button>
                   </div>
                 </div>
-
-                {/* Contact Organizer */}
-                <Card className="p-6">
-                  <h4 className="text-lg font-semibold mb-3">Need Help?</h4>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Have questions about your tickets or the event? Contact the organizer.
-                  </p>
-                  <Button variant="ghost" className="text-primary">
-                    Contact the organizer
-                  </Button>
-                </Card>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
